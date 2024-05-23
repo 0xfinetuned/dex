@@ -289,7 +289,7 @@ fn open_pool_test(txid: String, vout: u32, program_id: Pubkey, fee_txid: String,
             },
             UtxoMeta {
                 txid: fee_txid.clone(),
-                vout
+                vout: fee_vout,
             },
         ],
         data: instruction_data
