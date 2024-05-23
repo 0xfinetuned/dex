@@ -268,7 +268,7 @@ fn open_pool_test(txid: String, vout: u32, program_id: Pubkey, fee_txid: String,
             block: 1,
             tx: 4
         },
-        fee_txid,
+        fee_txid: fee_txid.clone(),
         fee_vout,
         buy_fee: None,
         sell_fee: None,
@@ -286,7 +286,11 @@ fn open_pool_test(txid: String, vout: u32, program_id: Pubkey, fee_txid: String,
             UtxoMeta {
                 txid,
                 vout
-            }
+            },
+            UtxoMeta {
+                txid: fee_txid.clone(),
+                vout: fee_vout,
+            },
         ],
         data: instruction_data
     };
