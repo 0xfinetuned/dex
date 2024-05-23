@@ -21,6 +21,28 @@ use std::{thread, time};
 use ordinals::{Edict, Etching, Rune, RuneId, Runestone, Terms};
 use runes::rune_id;
 
+fn start_dkg_test() {
+
+    let elf = fs::read("program_elf").unwrap();
+
+    let params = DeployProgramParams {
+        elf
+    };
+
+    let client = reqwest::blocking::Client::new();
+    let res = client.post("http://127.0.0.1:3458/")
+        .header("content-type", "application/json")
+        .json(&json!({
+            "jsonrpc": "2.0", 
+            "id": "curlycurl", 
+            "method": "start_dkg",
+        }))
+        .send()
+        .unwrap();
+    
+    println!("{:?}", res.text().unwrap());
+}
+
 fn get_trader(trader_id: u64) -> (Keypair, XOnlyPublicKey, Address) {
     let secp = Secp256k1::new();
 
@@ -315,7 +337,7 @@ fn open_pool_test(txid: String, vout: u32, program_id: Pubkey, fee_txid: String,
     };
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:9001/")
+    let res = client.post("http://127.0.0.1:3458/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -333,6 +355,8 @@ fn open_pool_test(txid: String, vout: u32, program_id: Pubkey, fee_txid: String,
 }
 
 fn main() {
+
+    start_dkg_test();
 
     let rpc = Client::new("https://bitcoin-node.dev.aws.archnetwork.xyz:18443/wallet/testwallet",
                 Auth::UserPass("bitcoin".to_string(),
@@ -360,7 +384,7 @@ fn main() {
 
     let txid = open_pool_test(state_txid.clone(), 1, deployed_program_id.clone(), fee_txid, 1);
 
-    let ten_millis = time::Duration::from_secs(60);
+    let ten_millis = time::Duration::from_secs(30);
     thread::sleep(ten_millis);
     get_processed_transaction(txid);
     
@@ -479,7 +503,7 @@ fn send_transaction_test(program_id: Pubkey, txid: String, vout: u32, fee_txid: 
     };
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:9001/")
+    let res = client.post("http://127.0.0.1:3458/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -510,7 +534,7 @@ fn deploy_program_test() -> String {
     };
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:9001/")
+    let res = client.post("http://127.0.0.1:3458/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -539,7 +563,7 @@ fn read_utxo(utxo_id: String) {
     };
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:9001/")
+    let res = client.post("http://127.0.0.1:3458/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -561,7 +585,7 @@ fn read_utxo(utxo_id: String) {
 fn get_best_block() {
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:9001/")
+    let res = client.post("http://127.0.0.1:3458/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -579,7 +603,7 @@ fn get_best_block() {
     let best_block_hash = binding.as_str().unwrap();
     
 
-    let res = client.post("http://127.0.0.1:9001/")
+    let res = client.post("http://127.0.0.1:3458/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -600,7 +624,7 @@ fn get_best_block() {
 fn get_processed_transaction(txid: String) {
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:9001/")
+    let res = client.post("http://127.0.0.1:3458/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -746,7 +770,7 @@ fn assign_authority_test(utxo: Utxo, authority: Pubkey, data: Vec<u8>) {
     };
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:9001/")
+    let res = client.post("http://127.0.0.1:3458/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -766,7 +790,7 @@ fn assign_authority_test(utxo: Utxo, authority: Pubkey, data: Vec<u8>) {
 fn get_network_address(data: &str) -> String {
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:9001/")
+    let res = client.post("http://127.0.0.1:3458/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
