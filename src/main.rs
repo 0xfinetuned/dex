@@ -30,7 +30,7 @@ fn start_dkg_test() {
     };
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:3458/")
+    let res = client.post("http://127.0.0.1:9001/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -337,7 +337,7 @@ fn open_pool_test(txid: String, vout: u32, program_id: Pubkey, fee_txid: String,
     };
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:3458/")
+    let res = client.post("http://127.0.0.1:9001/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -503,7 +503,7 @@ fn send_transaction_test(program_id: Pubkey, txid: String, vout: u32, fee_txid: 
     };
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:3458/")
+    let res = client.post("http://127.0.0.1:9001/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -527,14 +527,14 @@ pub struct DeployProgramParams {
 
 fn deploy_program_test() -> String {
 
-    let elf = fs::read("program_elf").unwrap();
+    let elf = fs::read("hello-world.elf").unwrap();
 
     let params = DeployProgramParams {
         elf
     };
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:3458/")
+    let res = client.post("http://127.0.0.1:9001/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -563,7 +563,7 @@ fn read_utxo(utxo_id: String) {
     };
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:3458/")
+    let res = client.post("http://127.0.0.1:9001/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -585,7 +585,7 @@ fn read_utxo(utxo_id: String) {
 fn get_best_block() {
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:3458/")
+    let res = client.post("http://127.0.0.1:9001/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -603,7 +603,7 @@ fn get_best_block() {
     let best_block_hash = binding.as_str().unwrap();
     
 
-    let res = client.post("http://127.0.0.1:3458/")
+    let res = client.post("http://127.0.0.1:9001/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -624,7 +624,7 @@ fn get_best_block() {
 fn get_processed_transaction(txid: String) {
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:3458/")
+    let res = client.post("http://127.0.0.1:9001/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -770,7 +770,7 @@ fn assign_authority_test(utxo: Utxo, authority: Pubkey, data: Vec<u8>) {
     };
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:3458/")
+    let res = client.post("http://127.0.0.1:9001/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
@@ -790,7 +790,7 @@ fn assign_authority_test(utxo: Utxo, authority: Pubkey, data: Vec<u8>) {
 fn get_network_address(data: &str) -> String {
 
     let client = reqwest::blocking::Client::new();
-    let res = client.post("http://127.0.0.1:3458/")
+    let res = client.post("http://127.0.0.1:9001/")
         .header("content-type", "application/json")
         .json(&json!({
             "jsonrpc": "2.0", 
